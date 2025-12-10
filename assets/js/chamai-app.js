@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Label
     const title = document.createElement("div");
     title.className = "checklist-label";
-    title.textContent = `${item.code} – ${item.label}`;
+    title.textContent = `${item.code}`;
 
     // High priority in bold + pill
     if (item.priority === "high") {
