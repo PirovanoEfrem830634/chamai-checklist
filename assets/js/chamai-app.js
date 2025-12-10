@@ -27,23 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const rootEl = document.getElementById("chamaiChecklistRoot");
   const startBtn = document.getElementById("startChecklist");
 
-  // Right panel
-  const totalScoreEl  = document.getElementById("chamaiTotalScore");
-  const progressEl    = document.getElementById("chamaiTotalProgress");
-  const qualityBadge  = document.getElementById("chamaiQualityBadge");
-  const qualityLabel  = document.getElementById("chamaiQualityLabel");
+  // Score overview
+  const totalScoreEl   = document.getElementById("chamaiTotalScore");
+  const progressEl     = document.getElementById("chamaiTotalProgress");
+  const qualityBadge   = document.getElementById("chamaiQualityBadge");
+  const qualityLabel   = document.getElementById("chamaiQualityLabel");
 
   // Export buttons
-  const exportCsvBtn  = document.getElementById("exportCsv");
-  const exportPdfBtn  = document.getElementById("exportPdf");
+  const exportCsvBtn   = document.getElementById("exportCsv");
+  const exportPdfBtn   = document.getElementById("exportPdf");
 
   // Reset & Commit
-  const commitAllBtn  = document.getElementById("commitAll");
-  const resetAllBtn   = document.getElementById("resetAll");
+  const commitAllBtn   = document.getElementById("commitAll");
+  const resetAllBtn    = document.getElementById("resetAll");
 
-  // Header left
-  const counterEl     = document.getElementById("chamaiCounter");
-  const scoreDisplayEl= document.getElementById("chamaiScoreDisplay");
+  // Header (sopra la checklist)
+  const counterEl      = document.getElementById("chamaiCounter");
+  const scoreDisplayEl = document.getElementById("chamaiScoreDisplay");
 
   // Guidelines collapse
   const guidelinesCard   = document.querySelector(".card-guidelines");
@@ -94,8 +94,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //-----------------------------------------------------------
-  //  SCORING
+  //  HELPERS: ITEMS & SCORING
   //-----------------------------------------------------------
+
+  function getTotalItems() {
+    if (!checklistData || !Array.isArray(checklistData.sections)) return 0;
+    let n = 0;
+    checklistData.sections.forEach(sec => {
+      if (Array.isArray(sec.items)) n += sec.items.length;
+    });
+    return n;
+  }
 
   function computeTotalScore() {
     if (!checklistData) return 0;
@@ -145,18 +154,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateScorePanel() {
     const score = computeTotalScore();
     const max   = computeMaxScore();
+    const items = getTotalItems();
 
-    totalScoreEl.textContent = `${score} / ${max}`;
+    if (totalScoreEl) {
+      totalScoreEl.textContent = `${score} / ${max}`;
+    }
 
-    const pct = Math.min(100, Math.max(0, (score / max) * 100));
-    progressEl.style.width = `${pct}%`;
+    const pct = max > 0 ? Math.min(100, Math.max(0, (score / max) * 100)) : 0;
+    if (progressEl) {
+      progressEl.style.width = `${pct}%`;
+    }
 
-    const [label, css] = qualityFromScore(score, max);
-    qualityLabel.textContent = label;
-    qualityBadge.className   = `csp-badge ${css}`;
+    const [label, css] = qualityFromScore(score, max || 1);
+    if (qualityLabel) qualityLabel.textContent = label;
+    if (qualityBadge) qualityBadge.className   = `csp-badge ${css}`;
 
-    counterEl.textContent      = `30 items`;
-    scoreDisplayEl.textContent = `Total score: ${score}`;
+    if (counterEl)      counterEl.textContent      = `${items} items`;
+    if (scoreDisplayEl) scoreDisplayEl.textContent = `Total score: ${score}`;
   }
 
   //-----------------------------------------------------------
@@ -186,12 +200,21 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.className = "checklist-item chamai-item";
     wrapper.dataset.itemCode = item.code;
 
-    // Label
+    // layout a due colonne via JS (domanda + bottoni affiancati)
+    wrapper.style.display = "flex";
+    wrapper.style.alignItems = "flex-start";
+    wrapper.style.justifyContent = "space-between";
+    wrapper.style.gap = "16px";
+
+    const content = document.createElement("div");
+    content.className = "chamai-item-content";
+    content.style.flex = "1 1 auto";
+
+    // --- TITOLO: SOLO CODE (PU01, DU07, ecc.) + HIGH PRIORITY PILL ---
     const title = document.createElement("div");
     title.className = "checklist-label";
-    title.textContent = `${item.code}`;
+    title.textContent = item.code || "";
 
-    // High priority in bold + pill
     if (item.priority === "high") {
       title.classList.add("chamai-label-high");
       const pill = document.createElement("span");
@@ -200,15 +223,44 @@ document.addEventListener("DOMContentLoaded", () => {
       title.appendChild(document.createTextNode(" "));
       title.appendChild(pill);
     }
+    content.appendChild(title);
 
-    // Description
-    const desc = document.createElement("div");
-    desc.className = "checklist-help";
-    desc.textContent = item.description;
+    // --- DESCRIZIONE PRINCIPALE ---
+    if (item.description) {
+      const desc = document.createElement("div");
+      desc.className = "checklist-help";
+      desc.textContent = item.description;
+      content.appendChild(desc);
+    }
 
-    // Controls (OK / mR / MR)
+    // --- SUBITEMS (lista a punti) SE PRESENTI ---
+    if (Array.isArray(item.subitems) && item.subitems.length > 0) {
+      const subList = document.createElement("ul");
+      subList.className = "checklist-subitems";
+      item.subitems.forEach(text => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        subList.appendChild(li);
+      });
+      content.appendChild(subList);
+    }
+
+    // --- NOTE (testo aggiuntivo sotto subitems) ---
+    if (item.note) {
+      const note = document.createElement("div");
+      note.className = "checklist-note";
+      note.textContent = item.note;
+      content.appendChild(note);
+    }
+
+    // --- CONTROLLI OK / mR / MR ---
     const controls = document.createElement("div");
     controls.className = "chamai-controls";
+    controls.style.display = "flex";
+    controls.style.flexShrink = "0";
+    controls.style.gap = "8px";
+    controls.style.alignItems = "center";
+    controls.style.marginTop = "8px";
 
     ["OK", "mR", "MR"].forEach(choice => {
       const btn = document.createElement("button");
@@ -232,8 +284,8 @@ document.addEventListener("DOMContentLoaded", () => {
       controls.appendChild(btn);
     });
 
-    wrapper.appendChild(title);
-    wrapper.appendChild(desc);
+    // ASSEMBLY
+    wrapper.appendChild(content);
     wrapper.appendChild(controls);
 
     return wrapper;
@@ -275,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetAllBtn.addEventListener("click", () => {
       if (!confirm("Reset all responses?")) return;
       clearState();
-      refreshUI();
+      buildChecklist(); // ricostruisco così azzero anche i bottoni
     });
   }
 
@@ -305,20 +357,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener("click", () => {
-      const max = computeMaxScore();
-      const rows = [["Item", "Label", "Priority", "Choice", "Score"]];
+      const max   = computeMaxScore();
+      const total = computeTotalScore();
+      const rows  = [["Item", "Description", "Priority", "Choice", "Score"]];
 
       checklistData.sections.forEach(section => {
         section.items.forEach(item => {
           const choice = state.scores[item.code] || "";
           const pr     = item.priority;
           const score  = choice ? SCORE_MAP[pr][choice] : "";
-          rows.push([item.code, item.label, pr, choice, score]);
+          rows.push([
+            item.code,
+            item.description || "",
+            pr,
+            choice,
+            score
+          ]);
         });
       });
 
       let csv = "ChAMAI Summary\n";
-      csv += `Total Score,${computeTotalScore()},/ ${max}\n\n`;
+      csv += `Total Score,${total},/ ${max}\n\n`;
 
       rows.forEach(r => {
         csv += r.map(x => `"${x}"`).join(",") + "\n";
@@ -362,13 +421,19 @@ document.addEventListener("DOMContentLoaded", () => {
           const choice = state.scores[item.code] || "";
           const pr     = item.priority;
           const score  = choice ? SCORE_MAP[pr][choice] : "";
-          table.push([item.code, item.label, pr, choice, score]);
+          table.push([
+            item.code,
+            item.description || "",
+            pr,
+            choice,
+            score
+          ]);
         });
       });
 
       if (doc.autoTable) {
         doc.autoTable({
-          head: [["Item", "Label", "Priority", "Choice", "Score"]],
+          head: [["Item", "Description", "Priority", "Choice", "Score"]],
           body: table,
           startY: 60
         });

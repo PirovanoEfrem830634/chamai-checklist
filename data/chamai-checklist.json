@@ -23,7 +23,7 @@
         {
           "id": 2,
           "code": "PU02",
-          "description": "",
+          "description": "Is the study design described? (e.g., retrospective, prospective, cross-sectional, observational, randomized control trial)",
           "priority": "high",
           "subitems": [],
           "notes": "",
@@ -33,8 +33,8 @@
         {
           "id": 3,
           "code": "PU03",
-          "description": "",
-          "priority": "high",
+          "description": "Is the study setting described? (e.g., teaching tertiary hospital; primary care ambulatory, nursing home, medical laboratory, R&D laboratory)",
+          "priority": "low",
           "subitems": [],
           "notes": "",
           "examples": [],
@@ -43,8 +43,8 @@
         {
           "id": 4,
           "code": "PU04",
-          "description": "",
-          "priority": "low",
+          "description": "Is the source of data described? (e.g., electronic specialty registry; laboratory information system; electronic health record; picture archiving and communication system)",
+          "priority": "high",
           "subitems": [],
           "notes": "",
           "examples": [],
@@ -53,7 +53,7 @@
         {
           "id": 5,
           "code": "PU05",
-          "description": "",
+          "description": "Is the medical task reported? (e.g., diagnostic detection, diagnostic characterization, diagnostic staging, prognosis (on which endpoint), event prediction, risk stratification, anatomical structure segmentation, treatment selection and planning, monitoring)",
           "priority": "high",
           "subitems": [],
           "notes": "",
@@ -63,7 +63,7 @@
         {
           "id": 6,
           "code": "PU06",
-          "description": "",
+          "description": "Is the data collection process described, also in terms of setting-specific data collection strategies (e.g. whether body temperatures are measured only in the morning; whether some blood tests are performed only in light of a specific diagnostic hypothesis)? Any consideration about data quality is appreciated, e.g., in regard to completeness, plausibility, and robustness with respect to upcoding or downcoding practices",
           "priority": "low",
           "subitems": [],
           "notes": "",
@@ -77,14 +77,18 @@
       "label": "Data Understanding",
       "items": [
         {
-          "id": 7,
           "code": "DU07",
-          "description": "",
           "priority": "high",
-          "subitems": [],
-          "notes": "",
-          "examples": [],
-          "taskRestrictions": []
+          "description": "Are the subject demographics described?",
+          "subitems": [
+            "Average age (mean or median)",
+            "Age variability (standard deviation or inter-quartile range)",
+            "Gender breakdown",
+            "Main comorbidities",
+            "Ethnic group",
+            "Socioeconomic status"
+          ],
+          "note": "In NLP studies, demographics may refer to text producers and include the context of the unstructured data. Specify domain and language dependency."
         },
         {
           "id": 8,
