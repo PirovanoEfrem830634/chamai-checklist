@@ -253,14 +253,20 @@ document.addEventListener("DOMContentLoaded", () => {
       content.appendChild(note);
     }
 
-    // --- CONTROLLI OK / mR / MR ---
-    const controls = document.createElement("div");
-    controls.className = "chamai-controls";
-    controls.style.display = "flex";
-    controls.style.flexShrink = "0";
-    controls.style.gap = "8px";
-    controls.style.alignItems = "center";
-    controls.style.marginTop = "8px";
+      // --- CONTROLLI OK / mR / MR ---
+  const controls = document.createElement("div");
+  controls.className = "chamai-controls";
+
+  // layout: colonna destra allineata con la PRIMA riga del testo
+  controls.style.display = "flex";
+  controls.style.flexShrink = "0";
+  controls.style.gap = "8px";
+  controls.style.alignItems = "center";
+
+  // 👇 importante: niente spinta verso il basso
+  controls.style.marginTop = "0";
+  controls.style.alignSelf = "flex-start";
+
 
     ["OK", "mR", "MR"].forEach(choice => {
       const btn = document.createElement("button");

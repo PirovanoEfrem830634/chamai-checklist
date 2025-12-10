@@ -1182,6 +1182,13 @@ body {
   transition: background 0.2s ease;
 }
 
+.chamai-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 /* Hover sottile */
 .chamai-item:hover {
   background: rgba(0,0,0,0.03);
