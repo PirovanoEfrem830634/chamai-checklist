@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CLARITY AI Checklist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="CLARITY AI – An evaluation checklist for AI and ML studies in medicine."
+  />
+
+  <!-- CSS esterno -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <script>
+    (function () {
+      const ok = localStorage.getItem("clarityAiAuth");
+      if (ok !== "ok") {
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
+  <div class="page">
+    <header class="header"></header>
+    <main class="main">
+      <!-- HERO / INTRO -->
+      <section class="card card-hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <!-- Riga top: titolo + CTA -->
+          <div class="hero-header-row">
+
+            <!-- LOGO + TEXT -->
+            <div class="hero-logo-block">
+              <div class="hero-logo"></div>
+              <div>
+                <h1 id="hero-title" class="hero-main-title">CLARITY AI</h1>
+                <h2 class="hero-subtitle-centered">Checklist for medical AI research</h2>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="hero-header-cta">
+              <button id="startChecklist" class="btn-primary btn-primary-lg">
+                Start checklist <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Testo introduttivo -->
+          <p class="hero-intro-text">
+            The CLARITY evaluation checklist provides structured guidance for assessing studies that use
+            Artificial Intelligence (AI) in the medical field, helping reviewers systematically examine
+            study design, dataset construction, model development and reporting.
+          </p>
+
+          <p class="hero-intro-text">
+            Items are grouped into structural elements and macro-topics and are rated on a scale from
+            <strong>0 to 5 stars</strong>, where 0 indicates lack of adherence and 5 represents exemplary
+            compliance. This scoring framework supports transparent, reproducible and fair evaluation of
+            medical AI research.
+          </p>
+
+          <!-- Badges -->
+          <div class="hero-badges-centered">
+            <span class="badge badge-strong">Focus: medical AI studies</span>
+            <span class="badge">Structural items &amp; macro topics</span>
+            <span class="badge">Aligned with CLARITY 2.0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- GUIDELINES / CHECKLIST OVERVIEW (collapsible) -->
+      <section class="card card-guidelines" aria-labelledby="guidelines-title">
+        <div class="guidelines-header">
+          <div>
+            <h2 id="guidelines-title" class="guidelines-heading">
+              How to use this checklist
+            </h2>
+            <p class="guidelines-kicker">
+              Optional reading – you can hide this section after the first use.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="guidelines-toggle"
+            aria-expanded="true"
+          >
+            <span class="guidelines-toggle-label">Hide details</span>
+          </button>
+        </div>
+
+        <div class="guidelines-body">
+          <p class="guidelines-text">
+            The CLARITY evaluation checklist is designed to provide clear and systematic
+            guidance for assessing studies that utilize Artificial Intelligence (AI) in the
+            medical field. This tool facilitates a comprehensive and objective evaluation
+            of AI-based research, ensuring that all critical aspects of study design,
+            implementation, and reporting are thoroughly examined.
+          </p>
+
+          <p class="guidelines-text">
+            Each section of the CLARITY evaluation file addresses a specific element of the
+            study, from dataset design and data handling to results interpretation and ethical
+            considerations. Users are guided through detailed questions designed to elicit
+            key information and insights about the rigor, transparency, and clinical relevance
+            of the study.
+          </p>
+
+          <p class="guidelines-text">
+            To ensure a standardized and transparent assessment process, each question can be
+            rated on a scale of <strong>0 to 5 stars</strong>, with 0 stars indicating lack
+            of adherence and 5 stars representing exemplary compliance. This rating system
+            enables a nuanced, structured, and fair evaluation of AI research in medicine.
+          </p>
+
+          <h3 class="guidelines-subheading">Star rating scale</h3>
+
+          <ul class="guidelines-list">
+            <li><strong>0 stars</strong> — The study doesn’t meet the criteria or lacks crucial information.</li>
+            <li><strong>1 star</strong> — The study minimally meets the criteria or lacks crucial information.</li>
+            <li><strong>2 stars</strong> — The study meets some of the criteria but has significant weaknesses.</li>
+            <li><strong>3 stars</strong> — The study adequately meets the criteria with minor issues.</li>
+            <li><strong>4 stars</strong> — The study meets the criteria well with only minor improvements needed.</li>
+            <li><strong>5 stars</strong> — The study fully meets the criteria and represents best practice.</li>
+          </ul>
+        </div>
+      </section>
+
+            <!-- WRAPPER CHECKLIST + SCORE PANEL -->
+      <div class="layout-checklists-with-panel">
+        <!-- COLONNA SINISTRA: LE DUE CHECKLIST  -->
+        <div class="layout-checklists-main">
+          <!-- CHECKLIST – STRUCTURAL ITEMS -->
+          <section
+            class="card card-checklist card-checklist--structural"
+            aria-label="CLARITY AI – Structural items"
+          >
+            <div class="checklist-header">
+              <div>
+                <div class="checklist-title">Structural items</div>
+                <div class="checklist-meta">
+                  <span id="checklistCounter">0 items</span>
+                  •
+                  <span id="checklistScore">Total score: 0</span>
+                  <span id="checklistMax" class="checklist-max"> / Max: 0</span>
+                </div>
+              </div>
+              <div class="checklist-actions-global">
+                <button id="commitAll" class="btn-secondary btn-small">
+                  Commit all
+                </button>
+                <button id="resetChecklist" class="btn-secondary btn-small btn-danger-soft">
+                  Reset all
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="checklistRootStructural"
+              class="checklist-container checklist-container--structural"
+            >
+              <!-- Popolato da app.js: sezione structural -->
+            </div>
+          </section>
+
+          <!-- CHECKLIST – MACRO-TOPIC ITEMS -->
+          <section
+            class="card card-checklist card-checklist--macro"
+            aria-label="CLARITY AI – Macro-topic items"
+          >
+            <div class="checklist-header">
+              <div>
+                <div class="checklist-title">Macro-topic items</div>
+                <div class="checklist-meta">
+                  <span id="checklistCounterMacro">0 items</span>
+                  •
+                  <span id="checklistScoreMacro">Total score: 0</span>
+                  <span id="checklistMaxMacro" class="checklist-max"> / Max: 0</span>
+                </div>
+              </div>
+
+              <div class="checklist-actions-global">
+                <button id="commitAllMacro" class="btn-secondary btn-small">
+                  Commit all
+                </button>
+                <button id="resetChecklistMacro" class="btn-secondary btn-small btn-danger-soft">
+                  Reset all
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="checklistRootMacro"
+              class="checklist-container checklist-container--macro"
+            >
+              <!-- Popolato da app.js: sezione macro-topic -->
+            </div>
+          </section>
+        </div>
+
+        <!-- COLONNA DESTRA: SCORE PANEL SEMPRE VISIBILE -->
+        <aside class="clarity-score-panel" aria-label="CLARITY AI score overview">
+          <div class="csp-card">
+            <div class="csp-header">
+              <div>
+                <div class="csp-title">Score overview</div>
+                <div class="csp-caption">Updated as you complete the checklist</div>
+              </div>
+            </div>
+
+            <div class="csp-divider"></div>
+
+            <!-- Structural -->
+            <section class="csp-score-block" id="clarityStructuralBlock">
+              <div class="csp-score-header">
+                <span class="csp-score-label">Structural Items</span>
+                <span class="csp-score-value" id="clarityStructuralScore">0 / 190</span>
+              </div>
+              <div class="csp-badge csp-badge-incomplete" id="clarityStructuralBadge">
+                <span class="csp-badge-dot"></span>
+                <span id="clarityStructuralBadgeText">Incomplete</span>
+              </div>
+              <div class="csp-progress">
+                <div class="csp-progress-fill" id="clarityStructuralProgress"></div>
+              </div>
+            </section>
+
+            <!-- Macro Topic -->
+            <section class="csp-score-block" id="clarityMacroBlock">
+              <div class="csp-score-header">
+                <span class="csp-score-label">Macro Topic Items</span>
+                <span class="csp-score-value" id="clarityMacroScore">0 / 215</span>
+              </div>
+              <div class="csp-badge csp-badge-incomplete" id="clarityMacroBadge">
+                <span class="csp-badge-dot"></span>
+                <span id="clarityMacroBadgeText">Incomplete</span>
+              </div>
+              <div class="csp-progress">
+                <div class="csp-progress-fill" id="clarityMacroProgress"></div>
+              </div>
+            </section>
+
+            <!-- 🔹 GLOBAL CLARITY SCORE -->
+            <section class="csp-score-block csp-score-block--total" id="clarityTotalBlock">
+              <div class="csp-score-header">
+                <span class="csp-score-label">Global CLARITY score</span>
+                <span class="csp-score-value" id="clarityTotalScore">0 / 405</span>
+              </div>
+              <div class="csp-progress csp-progress--total">
+                <div class="csp-progress-fill" id="clarityTotalProgress"></div>
+              </div>
+            </section>
+
+            <p class="csp-note">
+              Score ranges follow CLARITY AI definitions for Structural and Macro-topic items.
+            </p>
+            <div class="csp-export-actions">
+              <button id="exportCsv" class="btn-secondary btn-export">
+                Export CSV
+              </button>
+              <button id="exportPdf" class="btn-secondary btn-export">
+                Export PDF
+              </button>
+            </div>            
+          </div>
+        </aside>
+      </div>
+      <!-- FINE WRAPPER CHECKLIST + SCORE PANEL -->
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="credits">
+        <span class="label">Credits:</span>
+        <span>Research &amp; Design – Luca Marconi - Federico Cabitza</span>•
+        <span>Research &amp; Development – Efrem Pirovano</span>
+      </div>
+      <div class="license-pill">
+        Released as a client-side web tool – shared under CC BY 4.0.
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS esterno -->
+  <!-- jsPDF + AutoTable (per export PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>

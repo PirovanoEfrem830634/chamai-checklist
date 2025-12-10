@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CLARITY AI – Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="page page-login">
+    <main class="login-main">
+      <section class="card card-login" aria-labelledby="login-title">
+        <div class="login-header">
+          <div class="hero-logo-block">
+            <div class="hero-logo"></div>
+            <div>
+              <h1 id="login-title" class="hero-main-title">CLARITY AI</h1>
+              <h2 class="hero-subtitle-centered">Checklist for medical AI research</h2>
+            </div>
+          </div>
+          <p class="login-text">
+            Access to this interactive checklist is restricted to collaborators and supervisors.
+            Please enter the shared access password to continue.
+          </p>
+        </div>
+
+        <form id="clarityLoginForm" class="login-form">
+          <label class="login-label" for="loginPassword">Access password</label>
+          <input
+            id="loginPassword"
+            type="password"
+            class="login-input"
+            autocomplete="current-password"
+            placeholder="Enter password"
+            required
+          />
+
+          <p class="login-error" id="loginError" aria-live="polite"></p>
+
+          <div class="login-actions">
+            <button type="submit" class="btn-primary btn-primary-lg">
+              Enter checklist
+            </button>
+          </div>
+        </form>
+
+        <p class="login-note">
+          If you don’t have the password, please contact the project supervisor.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const ACCESS_PASSWORD = "clarity2025";
+
+      const form = document.getElementById("clarityLoginForm");
+      const input = document.getElementById("loginPassword");
+      const errorEl = document.getElementById("loginError");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const value = (input.value || "").trim();
+
+        if (value === ACCESS_PASSWORD) {
+          // salva un piccolo flag e reindirizza alla checklist vera
+          localStorage.setItem("clarityAiAuth", "ok");
+          window.location.href = "checklist.html";
+        } else {
+          errorEl.textContent = "Incorrect password. Please try again.";
+          input.value = "";
+          input.focus();
+
+          // piccolo effetto shake
+          form.classList.remove("login-shake");
+          void form.offsetWidth; // forza reflow
+          form.classList.add("login-shake");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
