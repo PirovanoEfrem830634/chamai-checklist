@@ -1,47 +1,58 @@
-# CLARITY AI Checklist – Web Edition  
-An interactive Apple-style web tool for evaluating the reporting quality of AI and Machine Learning studies in medicine.
+# ChAMAI Checklist – Web Edition
+
+An interactive Apple-style web tool for evaluating the methodological quality of medical AI studies.
 
 ---
 
 ## 📘 Overview
 
-**CLARITY AI** is a framework designed to assess the methodological and reporting quality of AI/ML studies in healthcare.  
-This web application implements the full checklist in a clean, accessible, and interactive format, inspired by Apple’s Human Interface Guidelines.
+**ChAMAI (Checklist for Assessment of Medical AI)** è un framework progettato per valutare la qualità metodologica e la trasparenza degli studi basati su AI/ML in medicina.
+Questa web-app riproduce l’intera checklist in una versione **interattiva e pulita**, completamente eseguibile nel browser.
 
-The tool is entirely **client-side**, built with **HTML + CSS + JavaScript**, and publicly accessible via GitHub Pages.  
-It is intended for:
-
-- 🧪 Researchers  
-- 👩‍⚕️ Clinicians  
-- 📊 Peer reviewers  
-- 📚 Students and authors working on AI in medicine  
+La piattaforma è **statica**, sviluppata in **HTML + CSS + JavaScript**, e può essere pubblicata facilmente tramite **GitHub Pages**.
 
 ---
 
 ## ✨ Features
 
-- **Interactive scoring system**  
-  Evaluate each checklist item with immediate visual feedback.
+* **Interactive scoring system**
+  Valutazione per item con opzioni NA / OK / mR / MR secondo le linee guida ChAMAI.
 
-- **Apple-inspired UI/UX**  
-  Clean typography, smooth components, soft shadows, rounded surfaces.
+* **Apple-inspired UI/UX**
+  Tipografia chiara, card arrotondate, ombre morbide e un design moderno e leggibile.
 
-- **Fully static and lightweight**  
-  No backend, no external dependencies, runs in any modern browser.
+* **Fully static and lightweight**
+  Nessuna dipendenza esterna, nessun backend, caricamento immediato.
 
-- **Automatic score calculation**  
-  Totals update dynamically as you complete the checklist.
-
-- **Ready for CLARITY Web**  
-  The structure accommodates both Structural Items and Macro-Topic Items.
+* **Automatic score calculation**
+  Totali aggiornati in tempo reale, con differenziazione per priorità alta/bassa.
 
 ---
 
 ## 🏗️ Technology Stack
 
-- **HTML5** – main structure  
-- **CSS3** – custom Apple-like styling  
-- **JavaScript** – logic, scoring, and dynamic rendering  
-- **GitHub Pages** – hosting  
+* **HTML5**
+* **CSS3** (Apple-style custom)
+* **JavaScript** (render dinamico + scoring)
+* **JSON** (struttura e contenuti della checklist)
+* **GitHub Pages** (hosting)
 
-No frameworks required.
+---
+
+## 📦 Project Structure
+
+```
+chamai-checklist/
+│
+├── assets/
+│   ├── css/style.css
+│   ├── js/app.js
+│   └── img/
+│
+├── data/
+│   └── chamai-checklist.json
+│
+├── index.html
+├── checklist.html
+└── README.md
+```
