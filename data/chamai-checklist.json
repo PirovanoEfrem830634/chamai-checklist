@@ -16,7 +16,7 @@
           "description": "Is the study population described, also in terms of inclusion/exclusion criteria (e.g., patients older than 18 tested for COVID-19; all inpatients hospitalized for 24 or more hours)?",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
@@ -26,7 +26,7 @@
           "description": "Is the study design described? (e.g., retrospective, prospective, cross-sectional, observational, randomized control trial)",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
@@ -36,7 +36,7 @@
           "description": "Is the study setting described? (e.g., teaching tertiary hospital; primary care ambulatory, nursing home, medical laboratory, R&D laboratory)",
           "priority": "low",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
@@ -46,7 +46,7 @@
           "description": "Is the source of data described? (e.g., electronic specialty registry; laboratory information system; electronic health record; picture archiving and communication system)",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
@@ -56,7 +56,7 @@
           "description": "Is the medical task reported? (e.g., diagnostic detection, diagnostic characterization, diagnostic staging, prognosis (on which endpoint), event prediction, risk stratification, anatomical structure segmentation, treatment selection and planning, monitoring)",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
@@ -66,7 +66,7 @@
           "description": "Is the data collection process described, also in terms of setting-specific data collection strategies (e.g. whether body temperatures are measured only in the morning; whether some blood tests are performed only in light of a specific diagnostic hypothesis)? Any consideration about data quality is appreciated, e.g., in regard to completeness, plausibility, and robustness with respect to upcoding or downcoding practices",
           "priority": "low",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         }
@@ -81,32 +81,41 @@
           "priority": "high",
           "description": "Are the subject demographics described?",
           "subitems": [
-            "Average age (mean or median)",
-            "Age variability (standard deviation or inter-quartile range)",
-            "Gender breakdown",
-            "Main comorbidities",
-            "Ethnic group",
-            "Socioeconomic status"
+            "1. Average age (mean or median)",
+            "2. Age variability (standard deviation or inter-quartile range)",
+            "3. Gender breakdown",
+            "4. Main comorbidities",
+            "5. Ethnic group",
+            "6. Socioeconomic status"
           ],
           "note": "In NLP studies, demographics may refer to text producers and include the context of the unstructured data. Specify domain and language dependency."
         },
         {
           "id": 8,
           "code": "DU08",
-          "description": "",
+          "description": "If the task is supervised, is the gold standard described? (e.g., 100 manually annotated clinical notes and pain scores recorded in EHR, Death, re-admission and International Classification of Disease (ICD) codes in discharge letters). In particular, the authors should describe the process of ground truthing described in terms of:",
           "priority": "high",
-          "subitems": [],
-          "notes": "",
+          "subitems": [
+            "1. Number of annotators (raters) producing the labels",
+            "2. Their profession and expertise (e.g., years from specialization or graduation)",
+            "3. Particular instructions given to annotators for quality control (e.g., which data were discarded and why)",
+            "4. Inter-rater agreement score (e.g., Alpha, Kappa, Rho)",
+            "5. Labelling technique (e.g., majority voting, Delphi method, consensus iteration)."
+          ],
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 9,
           "code": "DU09",
-          "description": "",
+          "description": "In the case of tabular data, are the features described (also in regard to how they were used in the model in terms of categories or transformation)? This description should be done for all, or, in the case that the features exceed 20, for a significant subset of the most predictive features in the following terms: name, short description, type (nominal, ordinal, continuous), and",
           "priority": "high",
-          "subitems": [],
-          "notes": "",
+          "subitems": [
+            "1. If continuous: unit of measure, range (min, max), mean and standard deviation (or median and IQR). Violin plots of some relevant continuous features are appreciated. If data are hematochemical parameters, also mention the brand and model of the analyzer equipment.",
+            "2. If nominal, all codes/values and their distribution. Feature transformation (e.g. one-hot encoding) should be reported if applied. Any terminology standard should be explicitly mentioned (e.g., LOINC, ICD-11, SNOMED) if applied."
+          ],
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         }
@@ -119,40 +128,43 @@
         {
           "id": 10,
           "code": "DP10",
-          "description": "",
+          "description": "If performed, is outlier detection reported? If the answer is yes, the definition of an outlier should be given [13] and the techniques applied to manage outliers should be described (e.g., removal through the application of an Isolation Forest model, or for NLP applications, of an excessively long/short text).",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 11,
           "code": "DP11",
-          "description": "",
+          "description": "If applicable, is missing-value management described? This description should be reported in the following terms:",
           "priority": "high",
-          "subitems": [],
-          "notes": "",
+          "subitems": [
+            "1. The missing rate for each feature should be reported",
+            "2. The technique of imputation, if any, should be described, and reasons for its choice should be given. If the missing rate is higher than 10%, a reection about the impact on the performance of a technique with respect to others would be appreciable [14]."
+          ],
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 12,
           "code": "DP12",
-          "description": "",
-          "priority": "low",
+          "description": "If performed, is feature pre-processing described? This description should be reported in terms of scaling transformations (e.g. normalization, standardization, log-transformation) or discretization procedures applied to continuous features, and encoding of categorical or ordinal variables (e.g., one-hot encoding, ordinal encoding). While for NLP task (if needed): stemming, lemmatization, stop words removal, tokenization, etc.. It is appropriate to describe the length of the input vector, specifically the number of tokens used.",
+          "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 13,
           "code": "DP13",
-          "description": "",
+          "description": "If applicable, is data imbalance analysis and adjustment performed and reported? The authors should describe any imbalance in the data distribution, both in regard to the target (e.g. only 10% of the patients were affected by a given disease); and in regard to important predictive features (e.g. female patients accounted for less than 10% of the total cases). The authors should also report about any technique (if any) applied to adjust the above mentioned imbalances (e.g. under- or over-sampling, SMOTE, balanced batch).",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         }
@@ -165,30 +177,30 @@
         {
           "id": 14,
           "code": "MO14",
-          "description": "",
+          "description": "Is the model task reported? (e.g., binary classification, multi-class classification, multi-label classification, ordinal regression, continuous regression, clustering, dimensionality reduction, segmentation)",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 15,
           "code": "MO15",
-          "description": "",
-          "priority": "low",
+          "description": "Is the model output specified? (e.g., disease positivity probability score, probability of infection within 5 days, postoperative 3-month pain scores, terms of clinical terms to be identified)",
+          "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 16,
           "code": "MO16",
-          "description": "",
-          "priority": "low",
+          "description": "Is the model architecture or type described? (e.g., SVM, Random Forest, Boosting, Logistic Regression, Nearest Neighbors, Convolutional/Recurrent Neural Network, K-Means, Generative Adversarial Network, Bayesian Network, Transformer, Latent Dirichlet Allocation)",
+          "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         }
@@ -201,70 +213,81 @@
         {
           "id": 17,
           "code": "VA17",
-          "description": "",
+          "description": "Is the data splitting described (e.g., no data splitting;, k-fold cross-validation (CV); nested k-fold CV; repeated CV; bootstrap validation; leave-one-out CV; 80%/10%10% train/validation/test)? In the case of data splitting, the authors must explicitly state that splitting was performed before any pre-processing steps (e.g. normalization, standardization, missing value imputation, feature selection, sampling) or model construction steps (training, hyper-parameter optimization), so to avoid data leakage and overfitting.",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 18,
           "code": "VA18",
-          "description": "",
+          "description": "Is the model training and selection described? In particular, the training procedure, hyper-parameter optimization or model selection should be described in terms of",
           "priority": "high",
-          "subitems": [],
-          "notes": "",
+          "subitems": [
+            "1. Range of hyper-parameters",
+            "2. Method used to select the best hyper-parameter configuration (e.g., Hyper-parameter selection was performed through nested k-fold CV based grid search)",
+            "3. Full specification of the hyper-parameters used to generate results",
+            "4. Procedure (if any) to limit over-fitting, in particular as related to the sample size."
+          ],
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 19,
           "code": "VA19",
-          "description": "",
+          "description": "(classification models) Is the model calibration described? If the answer is yes, the Brier score should be reported, and a calibration plot should be presented",
           "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 20,
           "code": "VA20",
-          "description": "",
-          "priority": "low",
+          "description": "Is the internal/internal-external model validation procedure described (e.g., internal 10-fold CV, time-based cross-validation)? The authors should explicitly specify that the sets have been splitted before normalization, standardization and imputation, to avoid data leakage (also refer to item 17 of this guideline). If possible, the authors should also comment on the adequacy of the available sample size for model training and validation. Moreover, the authors should try to choose the test set so that it is the most diverse with respect to the remainder of the sample (w.r.t. some multivariate similarity function) and how this choice relates to conservative (and lower-bound) estimates of the model's accuracy (and performance).",
+          "priority": "high",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 21,
           "code": "VA21",
-          "description": "",
+          "description": "Has the model been externally validated ? If the answer is yes, the characteristics of the external validation set(s) should be described. For instance, the authors could comment about the heterogeneity of the data with respect to the training set (e.g., degree of correspondence, Data Representativeness Criterion) and the cardinality of the external sample. If the performance on external datasets is found to be comparable with (or better than) that on training and internal datasets, the authors should provide some explanatory conjectures for why this happened (e.g., high heterogeneity of the training set, high homogeneity of the external dataset)",
           "priority": "low",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 22,
           "code": "VA22",
-          "description": "",
-          "priority": "low",
-          "subitems": [],
-          "notes": "",
+          "description": "Are the main error-based metrics used?",
+          "priority": "high",
+          "subitems": [
+            "1. Classification performance should be reported in terms of: Accuracy, Balanced accuracy, Specificity, Sensitivity (recall), Area Under the Curve (if the positive condition is extremely rare - as in case of stroke events - authors could consider the Area under the Precision-Recall Curve). Optionally also in terms of: positive and negative predictive value, F1 score, Matthew coefficient, F score of sensitivity and specificity, the full confusion matrix, Hamming Loss (for multi-label classification), Jaccard Index (for multi-label classification). For classification tasks, a rough guideline to qualitatively evaluate classification scores is proposed in.",
+            "2. Regression performance should be reported in terms of: R2; Mean Absolute Error (MAE); Root Mean Square Error (RMSE); Ratio between MAE (or RMSE) and SD (of the target)",
+            "3. Clustering performance should be reported in terms of: External validation metrics (e.g. mutual information, purity, Rand index), when ground truth labels are available, and Internal validation metrics (e.g. Davies-Bouldin index, Silhouette index, Homogeneity, Topic Coherence). The reported results of internal validation metrics should be discussed",
+            "4. Image segmentation performance, depending on the specific task, should be reported in terms of metrics like: accuracy-based metrics (e.g. Pixel accuracy, Jaccard Index, Dice Coefficient), distance-based metrics (e.g. mean absolute, or maximum difference), or area-based metrics (e.g. true positive fraction, true negative fraction, false positive fraction, false negative fraction).",
+            "5. Reinforcement learning performance, depending on the specific task, should be reported in terms of metrics like: Fixed-Policy Regret, Dispersion across Time, Dispersion across Runs, Risk across Time, Risk across Runs, Dispersion across Fixed-Policy Rollouts, Risk across Fixed-Policy Rollouts."
+          ],
+          "note": "The above estimates should be expressed, whenever possible, with their 95% (or 90%) confidence intervals (CI), or with other indicators of variability, with respect to the evaluation metrics reported. In this case, the authors should report which methods were applied for the computation of the confidence intervals (e.g. whether k-fold CV or bootstrap was applied, normal approximation). When comparing multiple models, the authors should discuss the statistical significance of the observed differences (e.g. through CI comparisons, or hypothesis testing). When comparing multiple regression models, a Taylor diagram could be reported and discussed.",
           "examples": [],
           "taskRestrictions": []
         },
         {
           "id": 23,
           "code": "VA23",
-          "description": "",
+          "description": "Are some relevant errors described? The authors should describe the characteristic of some noteworthy classification errors or cases for which the regression prediction was much higher (> 2x) than the MAE. If these cases represent statistical outliers for some covariates, the authors should comment on that. To detect relevant cases, the authors could focus on those cases on which the inter-rater agreement (either re ground truth or by comparing human vs. model's performance) is lowest.",
           "priority": "low",
           "subitems": [],
-          "notes": "",
+          "note": "",
           "examples": [],
           "taskRestrictions": []
         }
@@ -277,8 +300,8 @@
         {
           "id": 24,
           "code": "DE24",
-          "description": "",
-          "priority": "high",
+          "description": "Is the target user indicated? (e.g., clinician, radiologist, hospital management team, insurance company, patients)",
+          "priority": "low",
           "subitems": [],
           "notes": "",
           "examples": [],
@@ -287,7 +310,7 @@
         {
           "id": 25,
           "code": "DE25",
-          "description": "",
+          "description": "(classification models) Is the utility of the model discussed? The authors should report the performance of a baseline model (e.g., logistic regression, Naive Bayes). Additionally, the authors could report the Net Benefit or similar metrics and present utility curves. In particular, the authors are encouraged to discuss the selection of appropriate risk thresholds; the relative value of benefits (true positives/negatives) and harms (false positives/negatives); and the clinical utility of the proposed models.",
           "priority": "low",
           "subitems": [],
           "notes": "",
@@ -297,8 +320,8 @@
         {
           "id": 26,
           "code": "DE26",
-          "description": "",
-          "priority": "high",
+          "description": "Is information regarding model interpretability and explainability available (e.g. feature importance, interpretable surrogate models, information about the model parameters)? Claims of high or adequate model interpretability (e.g., by means of visual aids like decision trees, Variable Importance Plots or Shapley Additive Exlanations Plots (SHAP), Attention scores from a Transformer architecture) or model causability should always be supported by some user study, even qualitative or questionnaire-based. In the case surrogate models were applied, the authors should report about their fidelity.",
+          "priority": "low",
           "subitems": [],
           "notes": "",
           "examples": [],
@@ -307,7 +330,7 @@
         {
           "id": 27,
           "code": "DE27",
-          "description": "",
+          "description": "Is there any discussion regarding model fairness, ethical concerns or risks of bias (for a list of clinically relevant biases, refer to)? If possible, the authors should report the model performance stratified for particularly relevant population strata (e.g. model performance on male vs female subjects, or on minority groups)",
           "priority": "low",
           "subitems": [],
           "notes": "",
@@ -317,7 +340,7 @@
         {
           "id": 28,
           "code": "DE28",
-          "description": "",
+          "description": "Is any point made about the environmental sustainability of the model, or about the carbon footprint, of either the training phase or inference phase (use) of the model? If the answer is yes, then such a footprint should be expressed in terms of carbon dioxide equivalent (CO2eq) and details about the estimation method should be given. Any efforts to this end will be appreciated, including those based on tools available online, as well as any attempts to popularise this concept, e.g. through equivalences with the consumption of everyday devices such as smartphones or kilometres travelled by a fossil-fuelled car",
           "priority": "low",
           "subitems": [],
           "notes": "",
@@ -327,7 +350,7 @@
         {
           "id": 29,
           "code": "DE29",
-          "description": "",
+          "description": "Is software code and data shared with the community? If not, are reasons given? If software code and data are shared, institutional repositories such as Zenodo should be preferred to private-owned repositories (FigShare and arxiv for the datasets, GitHub, GitLab, or SourceForge for the code). If software code is shared, specification of dependencies should be reported and a clear distinction between training code and evaluation code should be made. The authors should also state whether the developed system, either as a sand-box or as fully-operating system, has been made freely accessible on the Web. as a side note, open source programming languages, such as Python or R, should be preferred over proprietary ones.",
           "priority": "high",
           "subitems": [],
           "notes": "",
@@ -337,7 +360,7 @@
         {
           "id": 30,
           "code": "DE30",
-          "description": "",
+          "description": "Is the system already adopted in daily practice? If the answer is yes, the authors should report on where (setting name) and since when. Moreover, appreciated additions would regard: the description on the digitized workflow integrating the system; any comment about the level of use; a qualitative assessment of the level of efficacy of the system's contribution to the clinical process; any comment about the technical and staff training effort actually required. If the answer is no, the authors should be explicit in regard to the point in the clinical workflow where the ML model should be applied, possibly using standard notation (e.g., BPMN). Moreover, the authors should also propose an assessment of the technology readiness of the described system, with explicit reference to the Technology Readiness Level framework4 or to any adaptation of this framework to the AI/ML domain. In either above cases (yes/no), the authors should report about the procedures (if any) for performance monitoring, model maintenance and updating.",
           "priority": "low",
           "subitems": [],
           "notes": "",
