@@ -1121,3 +1121,137 @@ body {
   font-size: 11px;
   color: var(--text-secondary);
 }
+
+/* ================================ */
+/*   CHAMAI – PILL BUTTON CONTROLS  */
+/* ================================ */
+
+.chamai-controls {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chamai-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+
+  /* Apple feel */
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.16s ease;
+
+  color: var(--text-secondary);
+}
+
+/* Hover molto delicato */
+.chamai-btn:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Active subtle tap */
+.chamai-btn:active {
+  transform: scale(0.97);
+}
+
+/* ========================== */
+/*    STATO SELEZIONATO       */
+/* ========================== */
+
+.chamai-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow:
+      0 0 0 1px rgba(0,122,255,0.18),
+      0 6px 14px rgba(0,122,255,0.18);
+}
+
+/* Active Hover */
+.chamai-btn.active:hover {
+  background: rgba(0,122,255,0.12);
+  transform: translateY(-1px);
+}
+
+/* Lista item più pulita */
+.chamai-item {
+  padding: 10px 6px 12px;
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+
+/* Hover sottile */
+.chamai-item:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+/* Titolo item migliorato */
+.chamai-item .checklist-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+}
+
+/* Descrizione */
+.chamai-item .checklist-help {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Sezioni animate on-load */
+.checklist-section {
+  animation: chamaiFadeIn 0.35s ease;
+}
+
+@keyframes chamaiFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Commit all / Reset all migliorati */
+.checklist-actions-global .btn-secondary {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.checklist-actions-global .btn-secondary:hover {
+  border-color: rgba(0,122,255,0.5);
+  color: var(--accent);
+}
+
+/* Scrollbar sleek */
+.checklist-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.checklist-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.checklist-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.12);
+  border-radius: 999px;
+}
+
+.checklist-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.19);
+}

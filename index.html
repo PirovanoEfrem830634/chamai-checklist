@@ -2,30 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CLARITY AI – Access</title>
+  <title>ChAMAI – Access</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
   <div class="page page-login">
     <main class="login-main">
       <section class="card card-login" aria-labelledby="login-title">
+        
         <div class="login-header">
+          <!-- Logo + Titolo -->
           <div class="hero-logo-block">
             <div class="hero-logo"></div>
             <div>
-              <h1 id="login-title" class="hero-main-title">CLARITY AI</h1>
-              <h2 class="hero-subtitle-centered">Checklist for medical AI research</h2>
+              <h1 id="login-title" class="hero-main-title">ChAMAI</h1>
+              <h2 class="hero-subtitle-centered">
+                Checklist for AI in Medical Research
+              </h2>
             </div>
           </div>
+
           <p class="login-text">
             Access to this interactive checklist is restricted to collaborators and supervisors.
             Please enter the shared access password to continue.
           </p>
         </div>
 
-        <form id="clarityLoginForm" class="login-form">
+        <!-- FORM LOGIN -->
+        <form id="chamaiLoginForm" class="login-form">
           <label class="login-label" for="loginPassword">Access password</label>
+
           <input
             id="loginPassword"
             type="password"
@@ -47,15 +55,17 @@
         <p class="login-note">
           If you don’t have the password, please contact the project supervisor.
         </p>
+
       </section>
     </main>
   </div>
 
+  <!-- SCRIPT PASSWORD -->
   <script>
     (function () {
-      const ACCESS_PASSWORD = "clarity2025";
+      const ACCESS_PASSWORD = "chamai2025";
 
-      const form = document.getElementById("clarityLoginForm");
+      const form = document.getElementById("chamaiLoginForm");
       const input = document.getElementById("loginPassword");
       const errorEl = document.getElementById("loginError");
 
@@ -64,17 +74,17 @@
         const value = (input.value || "").trim();
 
         if (value === ACCESS_PASSWORD) {
-          // salva un piccolo flag e reindirizza alla checklist vera
-          localStorage.setItem("clarityAiAuth", "ok");
-          window.location.href = "checklist.html";
+          // salva flag accesso e reindirizza alla ChAMAI checklist
+          localStorage.setItem("chamaiAuth", "ok");
+          window.location.href = "chamai.html";
         } else {
           errorEl.textContent = "Incorrect password. Please try again.";
           input.value = "";
           input.focus();
 
-          // piccolo effetto shake
+          // piccolo effetto shake se sbaglia
           form.classList.remove("login-shake");
-          void form.offsetWidth; // forza reflow
+          void form.offsetWidth; 
           form.classList.add("login-shake");
         }
       });

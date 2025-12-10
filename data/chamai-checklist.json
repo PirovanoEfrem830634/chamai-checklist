@@ -1,0 +1,262 @@
+{
+  "meta": {
+    "name": "ChAMAI Checklist",
+    "version": "1.0",
+    "description": "Checklist for assessing methodological quality of medical AI studies following CRISP-DM.",
+    "sectionsOrder": ["PU", "DU", "DP", "MO", "VA", "DE"]
+  },
+
+  "sections": [
+    {
+      "id": "PU",
+      "label": "Problem Understanding",
+      "items": [
+        {
+          "id": 1,
+          "code": "PU01",
+          "label": "Study population described",
+          "description": "Is the study population described, including inclusion and exclusion criteria?",
+          "priority": "high"
+        },
+        {
+          "id": 2,
+          "code": "PU02",
+          "label": "Clinical context and rationale",
+          "description": "Is the clinical context clearly defined and is a rationale provided for using AI/ML?",
+          "priority": "high"
+        },
+        {
+          "id": 3,
+          "code": "PU03",
+          "label": "Clear research objectives",
+          "description": "Are the research objectives clearly stated and aligned with the clinical problem?",
+          "priority": "high"
+        },
+        {
+          "id": 4,
+          "code": "PU04",
+          "label": "Intended use specified",
+          "description": "Is the intended use of the AI/ML system described (screening, diagnosis, prognosis, etc.)?",
+          "priority": "low"
+        },
+        {
+          "id": 5,
+          "code": "PU05",
+          "label": "Outcome definition",
+          "description": "Is the predicted outcome or task clearly defined and measurable?",
+          "priority": "high"
+        },
+        {
+          "id": 6,
+          "code": "PU06",
+          "label": "Ethical and clinical relevance",
+          "description": "Does the study explain the ethical or clinical relevance of addressing the problem?",
+          "priority": "low"
+        }
+      ]
+    },
+
+    {
+      "id": "DU",
+      "label": "Data Understanding",
+      "items": [
+        {
+          "id": 7,
+          "code": "DU07",
+          "label": "Data source described",
+          "description": "Is the source of the data described (registry, clinical center, multi-site, etc.)?",
+          "priority": "high"
+        },
+        {
+          "id": 8,
+          "code": "DU08",
+          "label": "Dataset characteristics",
+          "description": "Are dataset characteristics reported (sample size, distribution, demographics)?",
+          "priority": "high"
+        },
+        {
+          "id": 9,
+          "code": "DU09",
+          "label": "Bias or imbalance reported",
+          "description": "Does the study report any data imbalance, bias or representativeness issues?",
+          "priority": "high"
+        }
+      ]
+    },
+
+    {
+      "id": "DP",
+      "label": "Data Preparation",
+      "items": [
+        {
+          "id": 10,
+          "code": "DP10",
+          "label": "Preprocessing steps",
+          "description": "Are data preprocessing steps (cleaning, normalization, transformations) described?",
+          "priority": "high"
+        },
+        {
+          "id": 11,
+          "code": "DP11",
+          "label": "Handling missing data",
+          "description": "Is the strategy for handling missing data described and justified?",
+          "priority": "high"
+        },
+        {
+          "id": 12,
+          "code": "DP12",
+          "label": "Feature selection/extraction",
+          "description": "Are feature engineering, selection or extraction procedures documented?",
+          "priority": "low"
+        },
+        {
+          "id": 13,
+          "code": "DP13",
+          "label": "Train/test split methodology",
+          "description": "Is the dataset splitting strategy described and appropriate (e.g., cross-validation, hold-out)?",
+          "priority": "high"
+        }
+      ]
+    },
+
+    {
+      "id": "MO",
+      "label": "Modeling",
+      "items": [
+        {
+          "id": 14,
+          "code": "MO14",
+          "label": "Model type justified",
+          "description": "Is the choice of model type (ML, DL, ensemble, etc.) justified for the problem?",
+          "priority": "high"
+        },
+        {
+          "id": 15,
+          "code": "MO15",
+          "label": "Hyperparameters documented",
+          "description": "Are model hyperparameters or optimization strategies reported?",
+          "priority": "low"
+        },
+        {
+          "id": 16,
+          "code": "MO16",
+          "label": "Explainability addressed",
+          "description": "Does the study describe any explainability or interpretability approach (e.g., SHAP, Grad-CAM)?",
+          "priority": "low"
+        }
+      ]
+    },
+
+    {
+      "id": "VA",
+      "label": "Validation",
+      "items": [
+        {
+          "id": 17,
+          "code": "VA17",
+          "label": "Performance metrics appropriate",
+          "description": "Are the chosen performance metrics appropriate for the task and clearly defined?",
+          "priority": "high"
+        },
+        {
+          "id": 18,
+          "code": "VA18",
+          "label": "Internal validation performed",
+          "description": "Does the study provide internal validation results (cross-validation, bootstrap, etc.)?",
+          "priority": "high"
+        },
+        {
+          "id": 19,
+          "code": "VA19",
+          "label": "External validation (if applicable)",
+          "description": "Is external validation reported when required by the clinical application?",
+          "priority": "high"
+        },
+        {
+          "id": 20,
+          "code": "VA20",
+          "label": "Comparison with baselines",
+          "description": "Does the study compare the proposed model with baseline or existing methods?",
+          "priority": "low"
+        },
+        {
+          "id": 21,
+          "code": "VA21",
+          "label": "Uncertainty quantification",
+          "description": "Is uncertainty or confidence estimation reported (CI, variance, calibration)?",
+          "priority": "low"
+        },
+        {
+          "id": 22,
+          "code": "VA22",
+          "label": "Robustness analysis",
+          "description": "Does the study evaluate robustness (noise, missingness, sensitivity analysis)?",
+          "priority": "low"
+        },
+        {
+          "id": 23,
+          "code": "VA23",
+          "label": "Statistical significance",
+          "description": "Are statistical tests or significance analyses provided when comparing models?",
+          "priority": "low"
+        }
+      ]
+    },
+
+    {
+      "id": "DE",
+      "label": "Deployment",
+      "items": [
+        {
+          "id": 24,
+          "code": "DE24",
+          "label": "Generalizability discussed",
+          "description": "Does the study discuss generalizability to other settings, populations or hospitals?",
+          "priority": "high"
+        },
+        {
+          "id": 25,
+          "code": "DE25",
+          "label": "Clinical workflow integration",
+          "description": "Is there discussion of how the AI system integrates into clinical workflow?",
+          "priority": "low"
+        },
+        {
+          "id": 26,
+          "code": "DE26",
+          "label": "Risk and safety considerations",
+          "description": "Does the study address safety, potential harms, or failure modes of the AI system?",
+          "priority": "high"
+        },
+        {
+          "id": 27,
+          "code": "DE27",
+          "label": "Regulatory or ethics considerations",
+          "description": "Are regulatory, ethical or legal constraints discussed (GDPR, FDA/CE, bias, fairness)?",
+          "priority": "low"
+        },
+        {
+          "id": 28,
+          "code": "DE28",
+          "label": "Deployment scenario",
+          "description": "Is a real or hypothetical deployment scenario described (technical requirements, environment)?",
+          "priority": "low"
+        },
+        {
+          "id": 29,
+          "code": "DE29",
+          "label": "Limitations acknowledged",
+          "description": "Are study limitations explicitly acknowledged?",
+          "priority": "high"
+        },
+        {
+          "id": 30,
+          "code": "DE30",
+          "label": "Future work",
+          "description": "Does the study describe potential improvements or future research directions?",
+          "priority": "low"
+        }
+      ]
+    }
+  ]
+}
