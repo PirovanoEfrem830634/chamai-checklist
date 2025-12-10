@@ -162,13 +162,12 @@ body {
   gap: 14px;
 }
 
-/* Badge “C” con effetto floating glass + glow leggero */
+/* Hero logo – ChAMAI icon (purple → pink gradient) */
 .hero-logo {
   width: 46px;
   height: 46px;
   border-radius: 16px;
 
-  /* glass base */
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.55),
@@ -178,58 +177,52 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.85);
 
-  /* layout */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
 
-  /* glow leggerissimo */
+  /* glow delicato */
   box-shadow:
     0 14px 26px rgba(0, 0, 0, 0.16),
-    0 0 10px rgba(10, 132, 255, 0.25),
+    0 0 10px rgba(175, 82, 222, 0.35),
     0 0 0 1px rgba(0, 0, 0, 0.02);
 
-  /* testo */
   color: #ffffff;
   font-weight: 700;
   font-size: 20px;
 
-  /* animazioni hover */
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
 
-/* alone: gradiente interno che richiama l’app icon */
+/* inner gradient layer */
 .hero-logo::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 10% 0%, #34c759 0, transparent 42%),
-    linear-gradient(135deg, #007aff, #34c759);
+    radial-gradient(circle at 18% 10%, #ff2d55 0%, transparent 45%),
+    linear-gradient(135deg, #af52de, #ff2d55);
   opacity: 0.9;
   mix-blend-mode: multiply;
 }
 
-/* lettera sopra il glass */
+/* lettera sopra */
 .hero-logo::after {
   content: "C";
   position: relative;
   z-index: 1;
 }
 
-/* Hover: floating effect super delicato */
+/* subtle hover */
 .hero-logo:hover {
   transform: translateY(-3px) scale(1.03);
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.20),
-    0 0 14px rgba(10, 132, 255, 0.35),
+    0 0 14px rgba(175, 82, 222, 0.45),
     0 0 0 1px rgba(0, 0, 0, 0.02);
-  filter: brightness(1.06);
+  filter: brightness(1.05);
 }
 
 /* Bottone un filo più grande per sembrare CTA principale */
@@ -1254,4 +1247,102 @@ body {
 
 .checklist-container::-webkit-scrollbar-thumb:hover {
   background: rgba(0,0,0,0.19);
+}
+
+/* ========================== */
+/*   CHAMAI – ROW LAYOUT      */
+/* ========================== */
+
+.chamai-item {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 3fr) auto;
+  column-gap: 18px;
+  align-items: flex-start;
+  padding: 10px 6px 12px;
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+
+.chamai-item:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+/* Colonna 1: label */
+.chamai-item .checklist-label {
+  grid-column: 1;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Colonna 2: descrizione */
+.chamai-item .checklist-help {
+  grid-column: 2;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Colonna 3: pill buttons allineati a destra */
+.chamai-item .chamai-controls {
+  grid-column: 3;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+/* ========================== */
+/*   HIGH PRIORITY ITEMS      */
+/* ========================== */
+
+.chamai-label-high {
+  font-weight: 700;
+}
+
+.chamai-priority-pill {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,149,0,0.45);
+  background: rgba(255,149,0,0.12);
+  color: #c97a00;
+}
+
+/* ChAMAI – score card sopra la checklist */
+
+.chamai-score-top {
+  position: static;   /* niente sticky */
+  margin-bottom: 16px;
+}
+
+/* Checklist ChAMAI full width (nessuna griglia a due colonne) */
+.card-checklist--chamai {
+  width: 100%;
+}
+
+/* Se hai ancora .layout-checklists-with-panel nel CSS lo puoi ignorare
+   oppure forzare a layout singola colonna se rimane usato altrove */
+.layout-checklists-with-panel {
+  display: block;
+}
+
+/* Badge sotto la progress bar (score overview) */
+.csp-badge {
+  margin-top: 10px !important;   /* prima era 2px */
+}
+
+/* Evita che la pill HIGH PRIORITY vada a capo */
+.chamai-priority-pill {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.chamai-label-high {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
 }

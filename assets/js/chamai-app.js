@@ -9,14 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
   //-----------------------------------------------------------
 
   const STATE_KEY = "chamaiState";
+  // 🔹 Path corretto al JSON
   const JSON_PATH = "data/chamai-checklist.json";
 
   // Score mapping:
   //   high priority → OK=2, mR=1, MR=0
-  //   low priority  → OK=1, mR=0.5, MR=0
+  //   low  priority → OK=1, mR=0.5, MR=0
   const SCORE_MAP = {
     high: { OK: 2, mR: 1, MR: 0 },
-    low: { OK: 1, mR: 0.5, MR: 0 }
+    low:  { OK: 1, mR: 0.5, MR: 0 }
   };
 
   //-----------------------------------------------------------
@@ -27,27 +28,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startChecklist");
 
   // Right panel
-  const totalScoreEl = document.getElementById("chamaiTotalScore");
-  const progressEl = document.getElementById("chamaiTotalProgress");
-  const qualityBadge = document.getElementById("chamaiQualityBadge");
-  const qualityLabel = document.getElementById("chamaiQualityLabel");
+  const totalScoreEl  = document.getElementById("chamaiTotalScore");
+  const progressEl    = document.getElementById("chamaiTotalProgress");
+  const qualityBadge  = document.getElementById("chamaiQualityBadge");
+  const qualityLabel  = document.getElementById("chamaiQualityLabel");
 
   // Export buttons
-  const exportCsvBtn = document.getElementById("exportCsv");
-  const exportPdfBtn = document.getElementById("exportPdf");
+  const exportCsvBtn  = document.getElementById("exportCsv");
+  const exportPdfBtn  = document.getElementById("exportPdf");
 
   // Reset & Commit
-  const commitAllBtn = document.getElementById("commitAll");
-  const resetAllBtn = document.getElementById("resetAll");
+  const commitAllBtn  = document.getElementById("commitAll");
+  const resetAllBtn   = document.getElementById("resetAll");
 
-  // Score on left header
-  const counterEl = document.getElementById("chamaiCounter");
-  const scoreDisplayEl = document.getElementById("chamaiScoreDisplay");
+  // Header left
+  const counterEl     = document.getElementById("chamaiCounter");
+  const scoreDisplayEl= document.getElementById("chamaiScoreDisplay");
 
   // Guidelines collapse
-  const guidelinesCard = document.querySelector(".card-guidelines");
+  const guidelinesCard   = document.querySelector(".card-guidelines");
   const guidelinesToggle = document.querySelector(".guidelines-toggle");
-  const guidelinesLabel = document.querySelector(".guidelines-toggle-label");
+  const guidelinesLabel  = document.querySelector(".guidelines-toggle-label");
 
   //-----------------------------------------------------------
   // STATE
@@ -55,9 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let checklistData = null;
 
-  // State example:
-  // state.scores = { "PU01": "OK", "PU02": "mR", ... }
-  // state.committed = { "PU": true, "DU": false, ... }
+  // state.scores = { "PU01": "OK", ... }
+  // state.committed = { "PU": true, ... }
   let state = {
     scores: {},
     committed: {}
@@ -70,13 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadState() {
     try {
       const raw = localStorage.getItem(STATE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object") {
-          state = parsed;
-        }
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object") {
+        state = parsed;
       }
-    } catch(e) {
+    } catch (e) {
       console.warn("State load error:", e);
     }
   }
@@ -84,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function saveState() {
     try {
       localStorage.setItem(STATE_KEY, JSON.stringify(state));
-    } catch(e) {
+    } catch (e) {
       console.warn("State save error:", e);
     }
   }
@@ -95,21 +94,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //-----------------------------------------------------------
-  //  SCORING ENGINE
+  //  SCORING
   //-----------------------------------------------------------
 
   function computeTotalScore() {
     if (!checklistData) return 0;
-
     let total = 0;
 
     checklistData.sections.forEach(section => {
       section.items.forEach(item => {
         const choice = state.scores[item.code];
         if (!choice) return;
-
         const priority = item.priority === "high" ? "high" : "low";
-        const points = SCORE_MAP[priority][choice] ?? 0;
+        const points   = SCORE_MAP[priority][choice] ?? 0;
         total += points;
       });
     });
@@ -119,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function computeMaxScore() {
     if (!checklistData) return 0;
-
     let max = 0;
 
     checklistData.sections.forEach(section => {
@@ -134,36 +130,32 @@ document.addEventListener("DOMContentLoaded", () => {
   function qualityFromScore(score, max) {
     const pct = (score / max) * 100;
 
-    if (pct === 0) return ["Incomplete", "csp-badge-incomplete"];
-    if (pct < 30) return ["Very Low", "csp-badge-verylow"];
-    if (pct < 50) return ["Low", "csp-badge-low"];
-    if (pct < 70) return ["Moderate", "csp-badge-moderate"];
-    if (pct < 85) return ["High", "csp-badge-high"];
+    if (pct === 0)  return ["Incomplete", "csp-badge-incomplete"];
+    if (pct < 30)   return ["Very Low", "csp-badge-verylow"];
+    if (pct < 50)   return ["Low", "csp-badge-low"];
+    if (pct < 70)   return ["Moderate", "csp-badge-moderate"];
+    if (pct < 85)   return ["High", "csp-badge-high"];
     return ["Excellent", "csp-badge-excellent"];
   }
 
   //-----------------------------------------------------------
-  //  UPDATE SCORE PANEL
+  //  SCORE PANEL
   //-----------------------------------------------------------
 
   function updateScorePanel() {
     const score = computeTotalScore();
-    const max = computeMaxScore();
+    const max   = computeMaxScore();
 
-    // Total score text
     totalScoreEl.textContent = `${score} / ${max}`;
 
-    // Progress bar
     const pct = Math.min(100, Math.max(0, (score / max) * 100));
     progressEl.style.width = `${pct}%`;
 
-    // Quality badge
     const [label, css] = qualityFromScore(score, max);
     qualityLabel.textContent = label;
-    qualityBadge.className = `csp-badge ${css}`;
+    qualityBadge.className   = `csp-badge ${css}`;
 
-    // Header left
-    counterEl.textContent = `30 items`;
+    counterEl.textContent      = `30 items`;
     scoreDisplayEl.textContent = `Total score: ${score}`;
   }
 
@@ -181,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
     header.textContent = `${section.id} – ${section.label}`;
     sectionEl.appendChild(header);
 
-    // Items
     section.items.forEach(item => {
       const itemEl = createItemElement(section, item);
       sectionEl.appendChild(itemEl);
@@ -195,10 +186,22 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.className = "checklist-item chamai-item";
     wrapper.dataset.itemCode = item.code;
 
+    // Label
     const title = document.createElement("div");
     title.className = "checklist-label";
     title.textContent = `${item.code} – ${item.label}`;
 
+    // High priority in bold + pill
+    if (item.priority === "high") {
+      title.classList.add("chamai-label-high");
+      const pill = document.createElement("span");
+      pill.className = "chamai-priority-pill";
+      pill.textContent = "HIGH PRIORITY";
+      title.appendChild(document.createTextNode(" "));
+      title.appendChild(pill);
+    }
+
+    // Description
     const desc = document.createElement("div");
     desc.className = "checklist-help";
     desc.textContent = item.description;
@@ -216,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.dataset.itemCode = item.code;
       btn.dataset.priority = item.priority;
 
-      // Highlight state
       if (state.scores[item.code] === choice) {
         btn.classList.add("active");
       }
@@ -242,12 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
   //-----------------------------------------------------------
 
   function refreshUI() {
-    // Update active buttons
     document.querySelectorAll(".chamai-btn").forEach(btn => {
-      const code = btn.dataset.itemCode;
-      const choice = btn.dataset.choice;
+      const code    = btn.dataset.itemCode;
+      const choice  = btn.dataset.choice;
       const current = state.scores[code];
-
       btn.classList.toggle("active", current === choice);
     });
 
@@ -255,17 +255,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //-----------------------------------------------------------
-  //  BUILD CHECKLIST (from JSON)
+  //  BUILD CHECKLIST
   //-----------------------------------------------------------
 
   function buildChecklist() {
     rootEl.innerHTML = "";
-
     checklistData.sections.forEach(section => {
       const el = createSectionElement(section);
       rootEl.appendChild(el);
     });
-
     refreshUI();
   }
 
@@ -292,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //-----------------------------------------------------------
-  //  START CHECKLIST SCROLL
+  //  START BUTTON
   //-----------------------------------------------------------
 
   if (startBtn) {
@@ -308,23 +306,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener("click", () => {
       const max = computeMaxScore();
-      const rows = [
-        ["Item", "Label", "Priority", "Choice", "Score"]
-      ];
+      const rows = [["Item", "Label", "Priority", "Choice", "Score"]];
 
       checklistData.sections.forEach(section => {
         section.items.forEach(item => {
           const choice = state.scores[item.code] || "";
-          const pr = item.priority;
-          const score = choice ? SCORE_MAP[pr][choice] : "";
-
-          rows.push([
-            item.code,
-            item.label,
-            pr,
-            choice,
-            score
-          ]);
+          const pr     = item.priority;
+          const score  = choice ? SCORE_MAP[pr][choice] : "";
+          rows.push([item.code, item.label, pr, choice, score]);
         });
       });
 
@@ -336,11 +325,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
       a.href = url;
       a.download = "ChAMAI-results.csv";
       a.click();
+      URL.revokeObjectURL(url);
     });
   }
 
@@ -361,25 +351,18 @@ document.addEventListener("DOMContentLoaded", () => {
       doc.setFontSize(16);
       doc.text("ChAMAI Checklist Results", 20, 20);
 
-      const max = computeMaxScore();
+      const max   = computeMaxScore();
       const total = computeTotalScore();
       doc.setFontSize(11);
       doc.text(`Score: ${total} / ${max}`, 20, 40);
 
       const table = [];
-
       checklistData.sections.forEach(section => {
         section.items.forEach(item => {
           const choice = state.scores[item.code] || "";
-          const pr = item.priority;
-          const score = choice ? SCORE_MAP[pr][choice] : "";
-          table.push([
-            item.code,
-            item.label,
-            pr,
-            choice,
-            score
-          ]);
+          const pr     = item.priority;
+          const score  = choice ? SCORE_MAP[pr][choice] : "";
+          table.push([item.code, item.label, pr, choice, score]);
         });
       });
 
@@ -396,11 +379,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //-----------------------------------------------------------
-  //  GUIDELINES COLLAPSE (card chiusa di default)
+  //  GUIDELINES COLLAPSE (default CLOSED)
   //-----------------------------------------------------------
 
   if (guidelinesCard && guidelinesToggle && guidelinesLabel) {
-    // default: chiusa
     guidelinesCard.classList.add("collapsed");
     guidelinesToggle.setAttribute("aria-expanded", "false");
     guidelinesLabel.textContent = "Show details";
@@ -408,7 +390,6 @@ document.addEventListener("DOMContentLoaded", () => {
     guidelinesToggle.addEventListener("click", (e) => {
       e.preventDefault();
       const isCollapsed = guidelinesCard.classList.toggle("collapsed");
-
       if (isCollapsed) {
         guidelinesToggle.setAttribute("aria-expanded", "false");
         guidelinesLabel.textContent = "Show details";

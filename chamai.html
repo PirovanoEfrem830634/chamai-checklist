@@ -132,91 +132,97 @@
       </section>
 
 
-      <!-- ========================== -->
-      <!--   CHECKLIST + SCORE PANEL  -->
-      <!-- ========================== -->
-      <div class="layout-checklists-with-panel">
-
-        <!-- LEFT COLUMN: CRISP-DM SECTIONS -->
-        <div class="layout-checklists-main">
-
-          <!-- Placeholder container — JS will inject 6 sections -->
-          <section
-            class="card card-checklist"
-            aria-label="ChAMAI Checklist"
-          >
-            <div class="checklist-header">
-              <div>
-                <div class="checklist-title">ChAMAI Checklist</div>
-                <div class="checklist-meta">
-                  <span id="chamaiCounter">0 items</span>
-                  •
-                  <span id="chamaiScoreDisplay">Total score: 0</span>
-                </div>
+            <!-- SCORE OVERVIEW SOPRA LA CHECKLIST -->
+      <section
+        class="clarity-score-panel chamai-score-top"
+        aria-label="ChAMAI score overview"
+      >
+        <div class="csp-card">
+          <div class="csp-header">
+            <div>
+              <div class="csp-title">Score overview</div>
+              <div class="csp-caption">
+                Updated as you complete the checklist
               </div>
+            </div>
+          </div>
 
-              <div class="checklist-actions-global">
-                <button id="commitAll" class="btn-secondary btn-small">
-                  Commit all
-                </button>
-                <button id="resetAll" class="btn-secondary btn-small btn-danger-soft">
-                  Reset all
-                </button>
-              </div>
+          <div class="csp-divider"></div>
+
+          <!-- BLOCCO UNICO CHAMAI -->
+          <section class="csp-score-block csp-score-block--total" id="chamaiTotalBlock">
+            <div class="csp-score-header">
+              <span class="csp-score-label">ChAMAI score</span>
+              <span class="csp-score-value" id="chamaiTotalScore">0 / 47</span>
+            </div>
+
+            <div class="csp-progress csp-progress--total">
+              <div
+                class="csp-progress-fill"
+                id="chamaiTotalProgress"
+              ></div>
             </div>
 
             <div
-              id="chamaiChecklistRoot"
-              class="checklist-container"
+              class="csp-badge csp-badge-incomplete"
+              id="chamaiQualityBadge"
             >
-              <!-- JS injects 6 sections (PU, DU, DP, MO, VA, DE) -->
+              <span class="csp-badge-dot"></span>
+              <span id="chamaiQualityLabel">Incomplete</span>
             </div>
           </section>
+
+          <p class="csp-note">
+            The score represents weighted compliance across all 30 items.
+          </p>
+
+          <div class="csp-export-actions">
+            <button id="exportCsv" class="btn-secondary btn-export">
+              Export CSV
+            </button>
+            <button id="exportPdf" class="btn-secondary btn-export">
+              Export PDF
+            </button>
+          </div>
         </div>
+      </section>
 
-
-        <!-- RIGHT COLUMN: SCORE PANEL -->
-        <aside class="clarity-score-panel" aria-label="ChAMAI score overview">
-          <div class="csp-card">
-            <div class="csp-header">
-              <div>
-                <div class="csp-title">Score overview</div>
-                <div class="csp-caption">Updated as you complete the checklist</div>
-              </div>
-            </div>
-
-            <div class="csp-divider"></div>
-
-            <!-- TOTAL -->
-            <section class="csp-score-block csp-score-block--total">
-              <div class="csp-score-header">
-                <span class="csp-score-label">ChAMAI score</span>
-                <span class="csp-score-value" id="chamaiTotalScore">0</span>
-              </div>
-
-              <div class="csp-progress csp-progress--total">
-                <div class="csp-progress-fill" id="chamaiTotalProgress"></div>
-              </div>
-
-              <div class="csp-badge csp-badge-incomplete" id="chamaiQualityBadge">
-                <span class="csp-badge-dot"></span>
-                <span id="chamaiQualityLabel">Incomplete</span>
-              </div>
-            </section>
-
-            <p class="csp-note">
-              The score represents weighted compliance across all 30 items.
-            </p>
-
-            <div class="csp-export-actions">
-              <button id="exportCsv" class="btn-secondary btn-export">Export CSV</button>
-              <button id="exportPdf" class="btn-secondary btn-export">Export PDF</button>
+      <!-- CHECKLIST CHAMAI A TUTTA LARGHEZZA -->
+      <section
+        class="card card-checklist card-checklist--chamai"
+        aria-label="ChAMAI Checklist"
+      >
+        <div class="checklist-header">
+          <div>
+            <div class="checklist-title">ChAMAI Checklist</div>
+            <div class="checklist-meta">
+              <span id="chamaiCounter">30 items</span>
+              •
+              <span id="chamaiScoreDisplay">Total score: 0</span>
             </div>
           </div>
-        </aside>
-      </div>
-    </main>
-  </div>
+
+          <div class="checklist-actions-global">
+            <button id="commitAll" class="btn-secondary btn-small">
+              Commit all
+            </button>
+            <button
+              id="resetAll"
+              class="btn-secondary btn-small btn-danger-soft"
+            >
+              Reset all
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="chamaiChecklistRoot"
+          class="checklist-container checklist-container--chamai"
+        >
+          <!-- Popolato da chamai-app.js -->
+        </div>
+      </section>
+
 
 
   <!-- FOOTER -->
