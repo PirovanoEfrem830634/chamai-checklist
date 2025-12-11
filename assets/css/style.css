@@ -1471,3 +1471,163 @@ body {
   font-size: 11px;
   color: #6e6e73;
 }
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.icon {
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.sep {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom {
+  margin-top: 6px;
+}
+
+.contact {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.footer-line {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.license-pill {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  font-size: 12px;                     /* tutto piccolo */
+  color: var(--text-secondary);
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;              /* TUTTO IN COLONNA */
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.footer-line {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.license-pill {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* Footer – fix contatti su UNA sola riga */
+.footer-line-contact {
+  white-space: nowrap;        /* tieni tutto sulla stessa riga */
+}
+
+.footer-link {
+  display: inline;            /* sovrascrive il vecchio display:flex */
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
