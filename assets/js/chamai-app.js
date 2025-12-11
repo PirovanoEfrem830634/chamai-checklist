@@ -20,6 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     low:  { OK: 1, mR: 0.5, MR: 0 }
   };
 
+  // 🔹 Ruoli e opzioni per le risposte
+  const ROLE_AUTHOR   = "author";
+  const ROLE_REVIEWER = "reviewer";
+
+  const AUTHOR_OPTIONS   = ["NA", "No", "Yes"];
+  const REVIEWER_OPTIONS = ["OK", "mR", "MR"];
+
   //-----------------------------------------------------------
   //  DOM REFERENCES
   //-----------------------------------------------------------
@@ -50,35 +57,75 @@ document.addEventListener("DOMContentLoaded", () => {
   const guidelinesToggle = document.querySelector(".guidelines-toggle");
   const guidelinesLabel  = document.querySelector(".guidelines-toggle-label");
 
+  // 🔹 Toggle Author / Reviewer
+  const roleToggleEl = document.getElementById("roleToggle");
+
   //-----------------------------------------------------------
   // STATE
   //-----------------------------------------------------------
 
   let checklistData = null;
 
-  // state.scores = { "PU01": "OK", ... }
+  // NUOVA struttura:
+  // state.scores[itemCode] = { author: "NA|No|Yes|null", reviewer: "NA|OK|mR|MR|null" }
   // state.committed = { "PU": true, ... }
+  // state.role = "author" | "reviewer"
   let state = {
     scores: {},
-    committed: {}
+    committed: {},
+    role: ROLE_REVIEWER
   };
 
   //-----------------------------------------------------------
   // LOAD / SAVE STATE
   //-----------------------------------------------------------
 
+  function migrateLegacyState() {
+    // Se in localStorage avevi solo "OK"/"mR"/"MR" come stringa, li converto
+    if (!state || !state.scores) return;
+
+    let changed = false;
+
+    Object.keys(state.scores).forEach(code => {
+      const val = state.scores[code];
+      if (typeof val === "string") {
+        state.scores[code] = {
+          author: null,
+          reviewer: val
+        };
+        changed = true;
+      }
+    });
+
+    if (!state.role) {
+      state.role = ROLE_REVIEWER;
+      changed = true;
+    }
+
+    if (changed) {
+      saveState();
+    }
+  }
+
   function loadState() {
-    try {
-      const raw = localStorage.getItem(STATE_KEY);
-      if (!raw) return;
+  try {
+    const raw = localStorage.getItem(STATE_KEY);
+    if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === "object") {
         state = parsed;
       }
-    } catch (e) {
-      console.warn("State load error:", e);
     }
+
+    migrateLegacyState();
+
+    // 🔹 FORZA SEMPRE IL DEFAULT SUI REVIEWERS
+    state.role = ROLE_REVIEWER;
+    saveState();
+  } catch (e) {
+    console.warn("State load error:", e);
   }
+}
 
   function saveState() {
     try {
@@ -89,8 +136,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearState() {
-    state = { scores: {}, committed: {} };
+    state = { scores: {}, committed: {}, role: ROLE_REVIEWER };
     localStorage.removeItem(STATE_KEY);
+  }
+
+  //-----------------------------------------------------------
+  //  ROLE TOGGLE
+  //-----------------------------------------------------------
+
+  function getCurrentRole() {
+    return state.role === ROLE_AUTHOR ? ROLE_AUTHOR : ROLE_REVIEWER;
+  }
+
+  function getOptionsForCurrentRole() {
+    return getCurrentRole() === ROLE_AUTHOR ? AUTHOR_OPTIONS : REVIEWER_OPTIONS;
+  }
+
+  function setRole(newRole) {
+    const role = (newRole === ROLE_AUTHOR) ? ROLE_AUTHOR : ROLE_REVIEWER;
+    state.role = role;
+    saveState();
+
+    // aggiorno la UI del toggle se esiste
+    if (roleToggleEl) {
+      const buttons = roleToggleEl.querySelectorAll("[data-role]");
+      buttons.forEach(btn => {
+        const r = btn.getAttribute("data-role");
+        if (r === role) {
+          btn.classList.add("role-active");
+        } else {
+          btn.classList.remove("role-active");
+        }
+      });
+    }
+
+    // ricostruisco la checklist con le nuove opzioni
+    if (checklistData) {
+      buildChecklist();
+    }
+  }
+
+  function initRoleToggle() {
+    if (!roleToggleEl) return;
+
+    roleToggleEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-role]");
+      if (!btn) return;
+      const newRole = btn.getAttribute("data-role");
+      setRole(newRole);
+    });
+
+    setRole(ROLE_REVIEWER);
   }
 
   //-----------------------------------------------------------
@@ -106,14 +202,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return n;
   }
 
+  function getReviewerChoiceForItem(itemCode) {
+    const entry = state.scores[itemCode];
+    if (!entry) return null;
+    if (typeof entry === "string") return entry; // vecchio formato, per sicurezza
+    return entry.reviewer || null;
+  }
+
+  function getAuthorChoiceForItem(itemCode) {
+  const entry = state.scores[itemCode];
+  if (!entry) return null;
+  // nel formato legacy (stringa) non avevamo risposte author
+  if (typeof entry === "string") return null;
+  return entry.author || null;
+  }
+
   function computeTotalScore() {
     if (!checklistData) return 0;
     let total = 0;
 
     checklistData.sections.forEach(section => {
       section.items.forEach(item => {
-        const choice = state.scores[item.code];
-        if (!choice) return;
+        const choice = getReviewerChoiceForItem(item.code);
+        if (!choice || choice === "NA") return;
         const priority = item.priority === "high" ? "high" : "low";
         const points   = SCORE_MAP[priority][choice] ?? 0;
         total += points;
@@ -253,36 +364,54 @@ document.addEventListener("DOMContentLoaded", () => {
       content.appendChild(note);
     }
 
-      // --- CONTROLLI OK / mR / MR ---
-  const controls = document.createElement("div");
-  controls.className = "chamai-controls";
+    // --- CONTROLLI: dipendono dal ruolo ---
+    const controls = document.createElement("div");
+    controls.className = "chamai-controls";
 
-  // layout: colonna destra allineata con la PRIMA riga del testo
-  controls.style.display = "flex";
-  controls.style.flexShrink = "0";
-  controls.style.gap = "8px";
-  controls.style.alignItems = "center";
+    // layout: colonna destra allineata con la PRIMA riga del testo
+    controls.style.display = "flex";
+    controls.style.flexShrink = "0";
+    controls.style.gap = "8px";
+    controls.style.alignItems = "center";
+    controls.style.marginTop = "0";
+    controls.style.alignSelf = "flex-start";
 
-  // 👇 importante: niente spinta verso il basso
-  controls.style.marginTop = "0";
-  controls.style.alignSelf = "flex-start";
+    const options = getOptionsForCurrentRole();
+    const role = getCurrentRole();
 
+    const itemEntry = state.scores[item.code] || { author: null, reviewer: null };
+    const currentValue =
+      typeof itemEntry === "string"
+        ? itemEntry
+        : (itemEntry[role] || null);
 
-    ["OK", "mR", "MR"].forEach(choice => {
+    options.forEach(choice => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "chamai-btn";
       btn.textContent = choice;
       btn.dataset.choice = choice;
       btn.dataset.itemCode = item.code;
-      btn.dataset.priority = item.priority;
 
-      if (state.scores[item.code] === choice) {
+      if (currentValue === choice) {
         btn.classList.add("active");
       }
 
       btn.addEventListener("click", () => {
-        state.scores[item.code] = choice;
+        const prev = state.scores[item.code];
+        let entry;
+
+        if (!prev || typeof prev === "string") {
+          entry = { author: null, reviewer: null };
+          if (typeof prev === "string") {
+            entry.reviewer = prev;
+          }
+        } else {
+          entry = { ...prev };
+        }
+
+        entry[role] = choice; // salvo solo per il ruolo corrente
+        state.scores[item.code] = entry;
         saveState();
         refreshUI();
       });
@@ -302,10 +431,22 @@ document.addEventListener("DOMContentLoaded", () => {
   //-----------------------------------------------------------
 
   function refreshUI() {
+    const role = getCurrentRole();
+
     document.querySelectorAll(".chamai-btn").forEach(btn => {
       const code    = btn.dataset.itemCode;
       const choice  = btn.dataset.choice;
-      const current = state.scores[code];
+      const entry   = state.scores[code];
+
+      let current = null;
+      if (entry) {
+        if (typeof entry === "string") {
+          current = entry;
+        } else {
+          current = entry[role] || null;
+        }
+      }
+
       btn.classList.toggle("active", current === choice);
     });
 
@@ -318,6 +459,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function buildChecklist() {
     rootEl.innerHTML = "";
+    if (!checklistData) return;
+
     checklistData.sections.forEach(section => {
       const el = createSectionElement(section);
       rootEl.appendChild(el);
@@ -363,28 +506,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (exportCsvBtn) {
     exportCsvBtn.addEventListener("click", () => {
-      const max   = computeMaxScore();
-      const total = computeTotalScore();
-      const rows  = [["Item", "Description", "Priority", "Choice", "Score"]];
+      const role = getCurrentRole(); // author o reviewer
+      let rows = [];
+      let csv = "";
 
-      checklistData.sections.forEach(section => {
-        section.items.forEach(item => {
-          const choice = state.scores[item.code] || "";
-          const pr     = item.priority;
-          const score  = choice ? SCORE_MAP[pr][choice] : "";
-          rows.push([
-            item.code,
-            item.description || "",
-            pr,
-            choice,
-            score
-          ]);
+      if (role === ROLE_AUTHOR) {
+        // 🔹 Modalità AUTHOR: solo le scelte Yes/No/NA, niente punteggi
+        rows.push(["Item", "Description", "Priority", "Choice (Author)"]);
+
+        checklistData.sections.forEach(section => {
+          section.items.forEach(item => {
+            const choiceAuthor = getAuthorChoiceForItem(item.code) || "";
+            const pr = item.priority;
+            rows.push([
+              item.code,
+              item.description || "",
+              pr,
+              choiceAuthor
+            ]);
+          });
         });
-      });
 
-      let csv = "ChAMAI Summary\n";
-      csv += `Total Score,${total},/ ${max}\n\n`;
+        csv += "ChAMAI Summary – Author self-assessment\n\n";
 
+      } else {
+        // 🔹 Modalità REVIEWER: come prima, con punteggi
+        const max   = computeMaxScore();
+        const total = computeTotalScore();
+
+        rows.push(["Item", "Description", "Priority", "Choice (Reviewer)", "Score"]);
+
+        checklistData.sections.forEach(section => {
+          section.items.forEach(item => {
+            const choice = getReviewerChoiceForItem(item.code) || "";
+            const pr     = item.priority;
+            const score  = (choice && choice !== "NA") ? SCORE_MAP[pr][choice] : "";
+            rows.push([
+              item.code,
+              item.description || "",
+              pr,
+              choice,
+              score
+            ]);
+          });
+        });
+
+        csv += "ChAMAI Summary – Reviewer evaluation\n";
+        csv += `Total Score,${total},/ ${max}\n\n`;
+      }
+
+      // costruzione CSV comune ai due casi
       rows.forEach(r => {
         csv += r.map(x => `"${x}"`).join(",") + "\n";
       });
@@ -410,39 +581,71 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const role = getCurrentRole();
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "landscape" });
 
-      doc.setFontSize(16);
-      doc.text("ChAMAI Checklist Results", 20, 20);
+      if (role === ROLE_AUTHOR) {
+        // 🔹 PDF per AUTHORS: solo scelte Yes/No/NA
+        doc.setFontSize(16);
+        doc.text("ChAMAI Checklist – Author self-assessment", 20, 20);
 
-      const max   = computeMaxScore();
-      const total = computeTotalScore();
-      doc.setFontSize(11);
-      doc.text(`Score: ${total} / ${max}`, 20, 40);
-
-      const table = [];
-      checklistData.sections.forEach(section => {
-        section.items.forEach(item => {
-          const choice = state.scores[item.code] || "";
-          const pr     = item.priority;
-          const score  = choice ? SCORE_MAP[pr][choice] : "";
-          table.push([
-            item.code,
-            item.description || "",
-            pr,
-            choice,
-            score
-          ]);
+        const table = [];
+        checklistData.sections.forEach(section => {
+          section.items.forEach(item => {
+            const choiceAuthor = getAuthorChoiceForItem(item.code) || "";
+            const pr = item.priority;
+            table.push([
+              item.code,
+              item.description || "",
+              pr,
+              choiceAuthor
+            ]);
+          });
         });
-      });
 
-      if (doc.autoTable) {
-        doc.autoTable({
-          head: [["Item", "Description", "Priority", "Choice", "Score"]],
-          body: table,
-          startY: 60
+        if (doc.autoTable) {
+          doc.autoTable({
+            head: [["Item", "Description", "Priority", "Choice (Author)"]],
+            body: table,
+            startY: 40
+          });
+        }
+
+      } else {
+        // 🔹 PDF per REVIEWERS: come prima, con punteggi
+        const max   = computeMaxScore();
+        const total = computeTotalScore();
+
+        doc.setFontSize(16);
+        doc.text("ChAMAI Checklist Results – Reviewer evaluation", 20, 20);
+
+        doc.setFontSize(11);
+        doc.text(`Score: ${total} / ${max}`, 20, 40);
+
+        const table = [];
+        checklistData.sections.forEach(section => {
+          section.items.forEach(item => {
+            const choice = getReviewerChoiceForItem(item.code) || "";
+            const pr     = item.priority;
+            const score  = (choice && choice !== "NA") ? SCORE_MAP[pr][choice] : "";
+            table.push([
+              item.code,
+              item.description || "",
+              pr,
+              choice,
+              score
+            ]);
+          });
         });
+
+        if (doc.autoTable) {
+          doc.autoTable({
+            head: [["Item", "Description", "Priority", "Choice (Reviewer)", "Score"]],
+            body: table,
+            startY: 60
+          });
+        }
       }
 
       doc.save("ChAMAI-results.pdf");
@@ -476,6 +679,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //-----------------------------------------------------------
 
   loadState();
+  initRoleToggle();
 
   fetch(JSON_PATH)
     .then(r => r.json())
