@@ -2,93 +2,275 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ChAMAI – Access</title>
+  <title>ChAMAI Checklist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta
+    name="description"
+    content="ChAMAI – A CRISP-DM–structured checklist for evaluating medical AI studies."
+  />
+
+  <!-- CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body>
-  <div class="page page-login">
-    <main class="login-main">
-      <section class="card card-login" aria-labelledby="login-title">
-        
-        <div class="login-header">
-          <!-- Logo + Titolo -->
-          <div class="hero-logo-block">
-            <div class="hero-logo"></div>
-            <div>
-              <h1 id="login-title" class="hero-main-title">ChAMAI</h1>
-              <h2 class="hero-subtitle-centered">
-                Checklist for AI in Medical Research
-              </h2>
+  <div class="page">
+    <header class="header"></header>
+
+    <main class="main">
+
+      <!-- ========================== -->
+      <!--        HERO SECTION        -->
+      <!-- ========================== -->
+      <section class="card card-hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+
+          <div class="hero-header-row">
+            <!-- LOGO + TITOLI -->
+            <div class="hero-logo-block">
+              <div class="hero-logo"></div>
+              <div>
+                <h1 id="hero-title" class="hero-main-title">ChAMAI</h1>
+                <h2 class="hero-subtitle-centered">Checklist for AI in Medical Research</h2>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="hero-header-cta">
+              <button id="startChecklist" class="btn-primary btn-primary-lg">
+                Start checklist <span aria-hidden="true">↗</span>
+              </button>
             </div>
           </div>
 
-          <p class="login-text">
-            Access to this interactive checklist is restricted to collaborators and supervisors.
-            Please enter the shared access password to continue.
+          <!-- INTRO -->
+          <p class="hero-intro-text">
+            The ChAMAI checklist provides a structured evaluation framework for studies
+            involving Artificial Intelligence in medicine. It follows the CRISP-DM life-cycle
+            and helps reviewers systematically assess the rigor, transparency, and clinical
+            relevance of AI research.
+          </p>
+
+          <p class="hero-intro-text">
+            Items are organized into six CRISP-DM stages—Problem Understanding, Data
+            Understanding, Data Preparation, Modeling, Validation, and Deployment—and are
+            rated using a three-level scale (<strong>OK / mR / MR</strong>) weighted by
+            methodological priority.
+          </p>
+
+          <div class="hero-badges-centered">
+            <span class="badge badge-strong">CRISP-DM structure</span>
+            <span class="badge">30 items</span>
+            <span class="badge">Priority-weighted scoring</span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================== -->
+      <!--     HOW TO USE SECTION     -->
+      <!-- ========================== -->
+      <section class="card card-guidelines" aria-labelledby="guidelines-title">
+        <div class="guidelines-header">
+          <div>
+            <h2 id="guidelines-title" class="guidelines-heading">
+              How to use this checklist
+            </h2>
+            <p class="guidelines-kicker">
+              Optional reading — you can hide this section after the first use.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="guidelines-toggle"
+            aria-expanded="true"
+          >
+            <span class="guidelines-toggle-label">Hide details</span>
+          </button>
+        </div>
+
+        <div class="guidelines-body">
+          <p class="guidelines-text">
+            ChAMAI evaluates AI studies in medicine across six stages of the CRISP-DM
+            lifecycle. Each item is assigned a methodological priority:
+            <strong>high-priority</strong> items reflect essential reporting requirements,
+            while <strong>low-priority</strong> items provide additional evidence of quality.
+          </p>
+
+          <p class="guidelines-text">
+            Each item is scored using:
+            <strong>OK</strong> (fully met), <strong>mR</strong> (minor revisions needed),
+            or <strong>MR</strong> (major revisions required). High-priority items are scored
+            2 / 1 / 0 points; low-priority items 1 / 0.5 / 0 points.
+          </p>
+
+          <h3 class="guidelines-subheading">Scoring scale</h3>
+
+          <ul class="guidelines-list">
+            <li><strong>OK</strong> — Fully satisfied</li>
+            <li><strong>mR</strong> — Minor revisions needed</li>
+            <li><strong>MR</strong> — Major revisions required or missing</li>
+          </ul>
+
+          <p class="guidelines-text">
+            The final score summarizes compliance across all 30 items and can be exported as
+            CSV or PDF.
+          </p>
+        </div>
+      </section>
+
+
+            <!-- SCORE OVERVIEW SOPRA LA CHECKLIST -->
+      <section
+        class="clarity-score-panel chamai-score-top"
+        aria-label="ChAMAI score overview"
+      >
+        <div class="csp-card">
+          <div class="csp-header">
+            <div>
+              <div class="csp-title">Score overview</div>
+              <div class="csp-caption">
+                Updated as you complete the checklist
+              </div>
+            </div>
+          </div>
+
+          <div class="csp-divider"></div>
+
+          <!-- BLOCCO UNICO CHAMAI -->
+          <section class="csp-score-block csp-score-block--total" id="chamaiTotalBlock">
+            <div class="csp-score-header">
+              <span class="csp-score-label">ChAMAI score</span>
+              <span class="csp-score-value" id="chamaiTotalScore">0 / 47</span>
+            </div>
+
+            <div class="csp-progress csp-progress--total">
+              <div
+                class="csp-progress-fill"
+                id="chamaiTotalProgress"
+              ></div>
+            </div>
+
+            <div
+              class="csp-badge csp-badge-incomplete"
+              id="chamaiQualityBadge"
+            >
+              <span class="csp-badge-dot"></span>
+              <span id="chamaiQualityLabel">Incomplete</span>
+            </div>
+          </section>
+
+          <p class="csp-note">
+            The score represents weighted compliance across all 30 items.
+          </p>
+
+          <div class="csp-export-actions">
+            <button id="exportCsv" class="btn-secondary btn-export">
+              Export CSV
+            </button>
+            <button id="exportPdf" class="btn-secondary btn-export">
+              Export PDF
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHECKLIST CHAMAI A TUTTA LARGHEZZA -->
+      <section
+        class="card card-checklist card-checklist--chamai"
+        aria-label="ChAMAI Checklist"
+      >
+        <div class="checklist-header">
+          <div>
+            <div class="checklist-title">ChAMAI Checklist</div>
+            <div class="checklist-meta">
+              <span id="chamaiCounter">30 items</span>
+              •
+              <span id="chamaiScoreDisplay">Total score: 0</span>
+            </div>
+          </div>
+
+          <div class="checklist-actions-global">
+            <button id="commitAll" class="btn-secondary btn-small">
+              Commit all
+            </button>
+            <button
+              id="resetAll"
+              class="btn-secondary btn-small btn-danger-soft"
+            >
+              Reset all
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Role toggle Author / Reviewer -->
+        <div class="role-toggle-wrapper">
+          <div class="role-toggle" id="roleToggle">
+            <button
+              type="button"
+              class="role-btn role-btn-left role-active"
+              data-role="author"
+            >
+              Authors
+            </button>
+            <button
+              type="button"
+              class="role-btn role-btn-right"
+              data-role="reviewer"
+            >
+              Reviewers
+            </button>
+          </div>
+          <p class="role-help-text">
+            Authors: NA / No / Yes – Reviewers: OK / mR / MR (score calcolato sui reviewer).
           </p>
         </div>
 
-        <!-- FORM LOGIN -->
-        <form id="chamaiLoginForm" class="login-form">
-          <label class="login-label" for="loginPassword">Access password</label>
-
-          <input
-            id="loginPassword"
-            type="password"
-            class="login-input"
-            autocomplete="current-password"
-            placeholder="Enter password"
-            required
-          />
-
-          <p class="login-error" id="loginError" aria-live="polite"></p>
-
-          <div class="login-actions">
-            <button type="submit" class="btn-primary btn-primary-lg">
-              Enter checklist
-            </button>
-          </div>
-        </form>
-
-        <p class="login-note">
-          If you don’t have the password, please contact the project supervisor.
-        </p>
-
+        <div
+          id="chamaiChecklistRoot"
+          class="checklist-container checklist-container--chamai"
+        >
+          <!-- Popolato da chamai-app.js -->
+        </div>
       </section>
-    </main>
+
+<footer class="footer">
+  <div class="footer-inner">
+
+    <div class="footer-line">
+      Research &amp; Design — Luca Marconi &amp; Federico Cabitza
+    </div>
+
+    <div class="footer-line">
+      Efrem Pirovano — 
+      <a href="mailto:efrem.pirovano@gmail.com" class="footer-link">
+        efrem.pirovano@gmail.com
+      </a>
+      •
+      <a href="https://www.linkedin.com/in/efrem-pirovano-2776b6304/"
+         class="footer-link" target="_blank">
+        LinkedIn
+      </a>
+    </div>
+
+    <div class="footer-line">
+      <span class="license-pill">
+        Released as a client-side web tool – shared under CC BY 4.0.
+      </span>
+    </div>
+
   </div>
+</footer>
 
-  <!-- SCRIPT PASSWORD -->
-  <script>
-    (function () {
-      const ACCESS_PASSWORD = "chamai2025";
+  <!-- JS libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
 
-      const form = document.getElementById("chamaiLoginForm");
-      const input = document.getElementById("loginPassword");
-      const errorEl = document.getElementById("loginError");
+  <!-- Main ChAMAI logic -->
+  <script src="assets/js/chamai-app.js" defer></script>
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const value = (input.value || "").trim();
-
-        if (value === ACCESS_PASSWORD) {
-          // salva flag accesso e reindirizza alla ChAMAI checklist
-          localStorage.setItem("chamaiAuth", "ok");
-          window.location.href = "chamai.html";
-        } else {
-          errorEl.textContent = "Incorrect password. Please try again.";
-          input.value = "";
-          input.focus();
-
-          // piccolo effetto shake se sbaglia
-          form.classList.remove("login-shake");
-          void form.offsetWidth; 
-          form.classList.add("login-shake");
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
